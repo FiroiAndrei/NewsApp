@@ -61,11 +61,9 @@ fun NewsScreen(
     val coroutineScope = rememberCoroutineScope()
 
     val newsFromApi = viewModel.news.collectAsState().value
-    var newsList = remember {
-        mutableStateListOf<NewsArticle>()
-    }
 
-    newsList.addAll(newsFromApi)
+
+
 
     val context = LocalContext.current
 
@@ -108,17 +106,17 @@ fun NewsScreen(
                 contentPadding = PaddingValues(end = 4.dp),
                 state = listState
             ) {
-                items(newsList.size) { index ->
+                items(newsFromApi.size) { index ->
 
-                    if (index != newsList.size - 1) {
-                        NewsRow(newsList[index],
+                    if (index != newsFromApi.size - 1) {
+                        NewsRow(newsFromApi[index],
                             {
                                 navController.navigate(Screen.NewsArticleScreen.route + "/${index}")
                             })
                         Spacer(modifier = Modifier.height(8.dp))
                         Divider(thickness = 2.dp, color = Color.Black)
                     } else {
-                        NewsRow(newsList[index],
+                        NewsRow(newsFromApi[index],
                             {
                                 navController.navigate(Screen.NewsArticleScreen.route + "/${index}")
                             })
@@ -127,8 +125,7 @@ fun NewsScreen(
                         Button(
                             onClick = {
                                 viewModel.onLoadNewsClicked()
-                                val lastItemIndex = newsList.size - 1
-                                newsList.addAll(newsFromApi)
+                                val lastItemIndex = newsFromApi.size - 1
                                 coroutineScope.launch {
                                     listState.animateScrollToItem(lastItemIndex)
                                 }

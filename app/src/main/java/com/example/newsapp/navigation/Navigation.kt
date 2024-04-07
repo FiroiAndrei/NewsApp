@@ -35,6 +35,7 @@ fun Navigation(
 
             )
         ) {entry ->
+
              NewsArticleScreen(
                  title = newsList[entry.arguments!!.getInt("index")].title,
                  body = newsList[entry.arguments!!.getInt("index")].body,

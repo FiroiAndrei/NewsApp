@@ -22,6 +22,7 @@ class NewsViewModel(
 
     private val _news = MutableStateFlow<List<NewsArticle>>(emptyList())
     val news = _news.asStateFlow()
+    
 
     private val _isLoading = MutableStateFlow<Boolean>(false)
     val isLoading = _isLoading.asStateFlow()
@@ -61,7 +62,9 @@ class NewsViewModel(
                     is Result.Success -> {
                         pageOfApi += 1
                         result.data?.let { newsArticles ->
-                            _news.update { newsArticles }
+                            _news.update {
+                                _news.value + newsArticles
+                            }
                             _isLoading.update {
                                 false
                             }
